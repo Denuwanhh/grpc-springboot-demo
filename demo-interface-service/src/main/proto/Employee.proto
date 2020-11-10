@@ -1,0 +1,22 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package demo.interfaces.grpc;
+
+message EmployeeReply {
+    int64 employeeID = 1;
+    string employeeFirstName = 2;
+    string employeeLastName = 3;
+    fixed64 employeeDateOfBirth = 4;
+}
+
+// The request message containing the user's name.
+message EmployeeRequest {
+    int64 employeeID = 1;
+}
+
+// The greeting service definition.
+service EmployeeService {
+    // Sends a greeting
+    rpc getEmployee (EmployeeRequest) returns (EmployeeReply) {
+    }
+}
