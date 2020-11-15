@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import demo.interfaces.grpc.EmployeeReply;
+
 //import demo.interfaces.grpc.EmployeeReply;
 
 @RestController
@@ -18,9 +20,9 @@ public class AllocationRestController {
 		return "Allocation Service v1.0";
 	}
 	
-	@RequestMapping(path="/post/{employeeID}")
-	public String getEmployeeByEmployeeID(@PathVariable Long employeeID) {
-		return allocationGrpcClientImpl.getEmployeeDetails(employeeID);
+	@RequestMapping(path="/allocation/{employeeID}")
+	public String getAllocationByEmployeeID(@PathVariable Long employeeID) {
+		return allocationGrpcClientImpl.getAllocationDetails(employeeID);
 	}
 
 }

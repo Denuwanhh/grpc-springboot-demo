@@ -7,14 +7,18 @@ import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 
 @GrpcService
-public class EmployeeServiceImpl extends EmployeeServiceGrpc.EmployeeServiceImplBase{
+public class EmployeeServiceImpl extends EmployeeServiceGrpc.EmployeeServiceImplBase {
 
-	/* (non-Javadoc)
-	 * @see demo.interfaces.grpc.EmployeeServiceGrpc.EmployeeServiceImplBase#getEmployee(demo.interfaces.grpc.EmployeeRequest, io.grpc.stub.StreamObserver)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * demo.interfaces.grpc.EmployeeServiceGrpc.EmployeeServiceImplBase#getEmployee(
+	 * demo.interfaces.grpc.EmployeeRequest, io.grpc.stub.StreamObserver)
 	 */
 	@Override
 	public void getEmployee(EmployeeRequest request, StreamObserver<EmployeeReply> responseObserver) {
-       
+		
               EmployeeReply  response = EmployeeReply.newBuilder()
             		  						.setEmployeeID(request.getEmployeeID())
             		  						.setEmployeeFirstName("Denuwan")
@@ -24,7 +28,5 @@ public class EmployeeServiceImpl extends EmployeeServiceGrpc.EmployeeServiceImpl
               responseObserver.onNext(response);
               responseObserver.onCompleted();
 	}
-	
-	
 
 }

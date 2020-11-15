@@ -13,7 +13,7 @@ public class AllocationGrpcClientImpl {
 	@GrpcClient("employee-service")
     private EmployeeServiceGrpc.EmployeeServiceBlockingStub employeeServiceBlockingStub;
 
-	public String getEmployeeDetails(long employeeID) {
+	public String getAllocationDetails(long employeeID) {
 
 		EmployeeRequest employeeRequest = EmployeeRequest.newBuilder().setEmployeeID(employeeID).build();
 		
