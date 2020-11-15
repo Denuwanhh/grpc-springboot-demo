@@ -13,6 +13,7 @@
      <modules>
 	 <module>demo-interface-service</module>
 	 <module>demo-employee-service</module>
+	 <module>demo-allocation-service</module>
 	 <module>demo-eureka-server</module>
    </modules>
 
