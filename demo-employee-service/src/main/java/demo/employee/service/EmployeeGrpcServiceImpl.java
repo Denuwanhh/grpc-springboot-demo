@@ -7,7 +7,7 @@ import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 
 @GrpcService
-public class EmployeeServiceImpl extends EmployeeServiceGrpc.EmployeeServiceImplBase {
+public class EmployeeGrpcServiceImpl extends EmployeeServiceGrpc.EmployeeServiceImplBase {
 
 	/*
 	 * (non-Javadoc)
