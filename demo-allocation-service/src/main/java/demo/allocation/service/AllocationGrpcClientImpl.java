@@ -1,6 +1,10 @@
 package demo.allocation.service;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
+
+import com.google.protobuf.Descriptors.FieldDescriptor;
 
 import demo.interfaces.grpc.EmployeeReply;
 import demo.interfaces.grpc.EmployeeRequest;
@@ -13,13 +17,13 @@ public class AllocationGrpcClientImpl {
 	@GrpcClient("employee-service")
     private EmployeeServiceGrpc.EmployeeServiceBlockingStub employeeServiceBlockingStub;
 
-	public String getAllocationDetails(long employeeID) {
+	public Map<FieldDescriptor, Object> getAllocationDetails(long employeeID) {
 
 		EmployeeRequest employeeRequest = EmployeeRequest.newBuilder().setEmployeeID(employeeID).build();
 		
 		EmployeeReply employeeReply = employeeServiceBlockingStub.getEmployee(employeeRequest);
 
-		return employeeReply.getEmployeeFirstName().concat(" ").concat(employeeReply.getEmployeeLastName());
+		return employeeReply.getAllFields();
 	}
 
 }

@@ -1,13 +1,13 @@
 package demo.allocation.service;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import demo.interfaces.grpc.EmployeeReply;
-
-//import demo.interfaces.grpc.EmployeeReply;
+import com.google.protobuf.Descriptors.FieldDescriptor;
 
 @RestController
 public class AllocationRestController {
@@ -21,7 +21,7 @@ public class AllocationRestController {
 	}
 	
 	@RequestMapping(path="/allocation/{employeeID}")
-	public String getAllocationByEmployeeID(@PathVariable Long employeeID) {
+	public Map<FieldDescriptor, Object> getAllocationByEmployeeID(@PathVariable Long employeeID) {
 		return allocationGrpcClientImpl.getAllocationDetails(employeeID);
 	}
 
