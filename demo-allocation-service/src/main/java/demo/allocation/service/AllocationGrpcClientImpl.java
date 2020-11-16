@@ -6,8 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.protobuf.Descriptors.FieldDescriptor;
 
-import demo.interfaces.grpc.EmployeeReply;
-import demo.interfaces.grpc.EmployeeRequest;
+import demo.interfaces.grpc.Employee;
 import demo.interfaces.grpc.EmployeeServiceGrpc;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 
@@ -19,9 +18,9 @@ public class AllocationGrpcClientImpl {
 
 	public Map<FieldDescriptor, Object> getAllocationDetails(long employeeID) {
 
-		EmployeeRequest employeeRequest = EmployeeRequest.newBuilder().setEmployeeID(employeeID).build();
+		Employee employeeRequest = Employee.newBuilder().setEmployeeID(employeeID).build();
 		
-		EmployeeReply employeeReply = employeeServiceBlockingStub.getEmployee(employeeRequest);
+		Employee employeeReply = employeeServiceBlockingStub.getEmployee(employeeRequest);
 
 		return employeeReply.getAllFields();
 	}

@@ -2,21 +2,20 @@ syntax = "proto3";
 option java_multiple_files = true;
 package demo.interfaces.grpc;
 
-message EmployeeReply {
+message Employee {
     int64 employeeID = 1;
     string employeeFirstName = 2;
     string employeeLastName = 3;
     fixed64 employeeDateOfBirth = 4;
 }
 
-// The request message containing the user's name.
-message EmployeeRequest {
-    int64 employeeID = 1;
-}
-
-// The greeting service definition.
+// The Employee Service definition.
 service EmployeeService {
-    // Sends a greeting
-    rpc getEmployee (EmployeeRequest) returns (EmployeeReply) {
+    // Get employee By Employee ID
+    rpc getEmployee (Employee) returns (Employee) {
+    }
+    
+    // Get all employees by any given name
+    rpc getAllEmployeesByName (stream Employee) returns (Employee) {
     }
 }
