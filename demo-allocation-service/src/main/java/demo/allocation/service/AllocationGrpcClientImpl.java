@@ -3,12 +3,13 @@ package demo.allocation.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.stereotype.Service;
 
 import com.google.protobuf.Descriptors.FieldDescriptor;
 
-import demo.interfaces.grpc.Allocation;
 import demo.interfaces.grpc.Employee;
 import demo.interfaces.grpc.EmployeeServiceGrpc;
 import io.grpc.stub.StreamObserver;
@@ -32,54 +33,48 @@ public class AllocationGrpcClientImpl {
 		return employeeReply.getAllFields();
 	}
 
-	public List<Map<FieldDescriptor, Object>> getEmployeeFullDetails(long projectID) {
-		List<Employee> employeeIDList = new ArrayList<Employee>() {
-			{
-				add(Employee.newBuilder().setEmployeeID(1l).build());
-				add(Employee.newBuilder().setEmployeeID(2l).build());
-				add(Employee.newBuilder().setEmployeeID(3l).build());
-				add(Employee.newBuilder().setEmployeeID(4l).build());
-				add(Employee.newBuilder().setEmployeeID(5l).build());
-				add(Employee.newBuilder().setEmployeeID(6l).build());
-				add(Employee.newBuilder().setEmployeeID(7l).build());
-				add(Employee.newBuilder().setEmployeeID(8l).build());
-				add(Employee.newBuilder().setEmployeeID(9l).build());
-				add(Employee.newBuilder().setEmployeeID(10l).build());
-			}
-		};
-		List<Map<FieldDescriptor, Object>> employeeDetailsList = new ArrayList<Map<FieldDescriptor, Object>>();
+	public List<Map<FieldDescriptor, Object>> getEmployeeFullDetails(long projectID) throws InterruptedException {
+		
+		final CountDownLatch finishLatch = new CountDownLatch(1);
+		List<Employee> employeeIDList = new ArrayList<Employee>();
+		List<Map<FieldDescriptor, Object>> employeeDetailsFinalList = new ArrayList<Map<FieldDescriptor, Object>>();
 
-		StreamObserver<Employee> collect = employeeServiceStub.getAllEmployeesByIDList(new StreamObserver<Employee>() {
+		employeeIDList.add(Employee.newBuilder().setEmployeeID(1l).build());
+		employeeIDList.add(Employee.newBuilder().setEmployeeID(2l).build());
+		employeeIDList.add(Employee.newBuilder().setEmployeeID(3l).build());
+		employeeIDList.add(Employee.newBuilder().setEmployeeID(4l).build());
+		employeeIDList.add(Employee.newBuilder().setEmployeeID(5l).build());
+		employeeIDList.add(Employee.newBuilder().setEmployeeID(6l).build());
+		employeeIDList.add(Employee.newBuilder().setEmployeeID(7l).build());
+		employeeIDList.add(Employee.newBuilder().setEmployeeID(8l).build());
+		employeeIDList.add(Employee.newBuilder().setEmployeeID(9l).build());
+		employeeIDList.add(Employee.newBuilder().setEmployeeID(10l).build());
 
-			@Override
-			public void onNext(Employee value) {
-				System.out.println("Employee: " + value.getEmployeeFirstName());
-				System.out.println("Employee: " + value.getEmployeeLastName());
-				System.out.println("Employee: " + value.getEmployeeID());
-				
-				employeeDetailsList.add(value.getAllFields());
-			}
+		StreamObserver<Employee> responseObserver = employeeServiceStub.getAllEmployeesByIDList(new StreamObserver<Employee>() {
+					@Override
+					public void onNext(Employee value) {
+						employeeDetailsFinalList.add(value.getAllFields());
+					}
 
-			@Override
-			public void onError(Throwable t) {
-				// TODO Auto-generated method stub
-				System.out.println("Error" + t);
+					@Override
+					public void onError(Throwable t) {
+						finishLatch.countDown();
+					}
 
-			}
-
-			@Override
-			public void onCompleted() {
-				// TODO Auto-generated method stub
-				System.out.println("Compleate");
-			}
+					@Override
+					public void onCompleted() {
+						finishLatch.countDown();
+					}
 
 		});
+		
+		employeeIDList.stream().forEach(responseObserver::onNext);
 
-		employeeIDList.stream().forEach(collect::onNext);
+		responseObserver.onCompleted();
 
-		collect.onCompleted();
+		finishLatch.await(1, TimeUnit.MINUTES);
 
-		return employeeDetailsList;
+		return employeeDetailsFinalList;
 	}
 
 }

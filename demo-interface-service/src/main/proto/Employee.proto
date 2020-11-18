@@ -16,6 +16,6 @@ service EmployeeService {
     }
     
     // Get all employees by any given name
-    rpc getAllEmployeesByIDList (stream Employee) returns (Employee) {
+    rpc getAllEmployeesByIDList (stream Employee) returns (stream Employee) {
     }
 }

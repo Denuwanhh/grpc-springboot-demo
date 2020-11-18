@@ -29,7 +29,7 @@ public class AllocationRestController {
 	}
 	
 	@GetMapping("/allocation")
-	public List<Map<FieldDescriptor, Object>> getFullEmployeeListByProjectID(@RequestParam(value = "projectID", required = true) Long projectID) {
+	public List<Map<FieldDescriptor, Object>> getFullEmployeeListByProjectID(@RequestParam(value = "projectID", required = true) Long projectID) throws InterruptedException {
 		return allocationGrpcClientImpl.getEmployeeFullDetails(projectID);
 	}
 

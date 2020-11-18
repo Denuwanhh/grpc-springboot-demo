@@ -1,5 +1,8 @@
 package demo.employee.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import demo.interfaces.grpc.Employee;
 import demo.interfaces.grpc.EmployeeServiceGrpc;
 import io.grpc.stub.StreamObserver;
@@ -32,33 +35,26 @@ public class EmployeeGrpcServiceImpl extends EmployeeServiceGrpc.EmployeeService
 	public StreamObserver<Employee> getAllEmployeesByIDList(StreamObserver<Employee> responseObserver) {
 		return new StreamObserver<Employee>() {
 			
-			Employee response;
+			List<Employee> responseList = new ArrayList<Employee>();
 			
 			@Override
 			public void onNext(Employee value) {
-				response = Employee.newBuilder()
+				responseList.add(Employee.newBuilder()
 							.setEmployeeID(value.getEmployeeID())
 							.setEmployeeFirstName("First Name")
 							.setEmployeeLastName("Last Name")
-							.build();
-				
-				System.out.println("Employee: " + value.getEmployeeFirstName());
-				System.out.println("Employee: " + value.getEmployeeLastName());
-				System.out.println("Employee: " + value.getEmployeeID());				
+							.build());
 			}
 			
 			@Override
 			public void onError(Throwable t) {
-				responseObserver.onError(t);
-				System.out.println("Error: " + t);
-				
+				responseObserver.onError(t);				
 			}
 			
 			@Override
 			public void onCompleted() {
-				System.out.println("Completed !");
-				responseObserver.onNext(response);
-				
+				responseList.stream().forEach(responseObserver::onNext);
+				responseObserver.onCompleted();
 			}
 		};
 	}
