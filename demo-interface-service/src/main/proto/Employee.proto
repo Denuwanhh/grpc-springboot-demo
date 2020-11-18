@@ -13,7 +13,7 @@ message Employee {
 // The Employee Service definition.
 service EmployeeService {
     // Get employee By Employee ID
-    // A example of unary RPCs where the client sends a single request to the server and gets a single response back, just like a normal function call.
+    // IDL of unary RPCs where the client sends a single request to the server and gets a single response back, just like a normal function call.
     rpc getEmployee (Employee) returns (Employee) {
     }
     
