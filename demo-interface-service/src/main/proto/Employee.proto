@@ -7,15 +7,21 @@ message Employee {
     string employeeFirstName = 2;
     string employeeLastName = 3;
     fixed64 employeeDateOfBirth = 4;
+    float employeeWorkingYears = 5;
 }
 
 // The Employee Service definition.
 service EmployeeService {
     // Get employee By Employee ID
+    // A example of unary RPCs where the client sends a single request to the server and gets a single response back, just like a normal function call.
     rpc getEmployee (Employee) returns (Employee) {
     }
     
     // Get all employees by any given name
     rpc getAllEmployeesByIDList (stream Employee) returns (stream Employee) {
+    }
+    
+    // Get employee By Employee ID
+    rpc getMostExperiencedEmployee (stream Employee) returns (Employee) {
     }
 }

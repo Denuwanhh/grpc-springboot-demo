@@ -10,9 +10,11 @@ import net.devh.boot.grpc.server.service.GrpcService;
 
 @GrpcService
 public class EmployeeGrpcServiceImpl extends EmployeeServiceGrpc.EmployeeServiceImplBase {
-
+	
 	/*
-	 * (non-Javadoc)
+	 * Server side implementation of unary RPCs where the client sends a single request
+	 * to the server and gets a single response back, just like a normal function
+	 * call.
 	 * 
 	 * @see
 	 * demo.interfaces.grpc.EmployeeServiceGrpc.EmployeeServiceImplBase#getEmployee(
@@ -20,11 +22,11 @@ public class EmployeeGrpcServiceImpl extends EmployeeServiceGrpc.EmployeeService
 	 */
 	@Override
 	public void getEmployee(Employee request, StreamObserver<Employee> responseObserver) {
-
-		Employee response = Employee.newBuilder().setEmployeeID(request.getEmployeeID()).setEmployeeFirstName("Denuwan")
-				.setEmployeeLastName("Hettiarachchi").build();
-
-		responseObserver.onNext(response);
+		responseObserver.onNext(EmployeeResourceProvider.getEmployeeListfromEmployeeSource()
+													.stream()
+													.filter(emp -> emp.getEmployeeID() == request.getEmployeeID())
+													.findFirst()
+													.get());
 		responseObserver.onCompleted();
 	}
 
@@ -58,5 +60,37 @@ public class EmployeeGrpcServiceImpl extends EmployeeServiceGrpc.EmployeeService
 			}
 		};
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see demo.interfaces.grpc.EmployeeServiceGrpc.EmployeeServiceImplBase#
+	 * getMostExperiencedEmployee(io.grpc.stub.StreamObserver)
+	 */
+	@Override
+	public StreamObserver<Employee> getMostExperiencedEmployee(StreamObserver<Employee> responseObserver) {
+		return new StreamObserver<Employee>() {
+
+			Employee response = Employee.newBuilder().setEmployeeWorkingYears(0).build();
+
+			@Override
+			public void onNext(Employee value) {
+				if(value.getEmployeeWorkingYears() > response.getEmployeeWorkingYears()) {
+					response = value;
+				}
+			}
+
+			@Override
+			public void onError(Throwable t) {
+				responseObserver.onError(t);
+			}
+
+			@Override
+			public void onCompleted() {
+				responseObserver.onNext(response);
+				responseObserver.onCompleted();
+			}
+		};
+	}	
 	
 }

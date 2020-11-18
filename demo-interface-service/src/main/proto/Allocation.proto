@@ -5,8 +5,9 @@ package demo.interfaces.grpc;
 message Allocation {
     int64 allocationID = 1;
     int64 employeeID = 2;
-    fixed64 allocationStartDate = 3;
-    fixed64 allocationEndDate = 4;
+    int64 projectID = 3;
+    fixed64 allocationStartDate = 4;
+    fixed64 allocationEndDate = 5;
 }
 
 // The Allocation Service Definition

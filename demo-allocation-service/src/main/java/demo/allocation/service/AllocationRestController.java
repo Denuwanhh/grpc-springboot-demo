@@ -23,9 +23,9 @@ public class AllocationRestController {
 		return "Allocation Service v1.0";
 	}
 	
-	@GetMapping("/allocation/{employeeID}")
-	public Map<FieldDescriptor, Object> getAllocationByEmployeeID(@PathVariable Long employeeID) {
-		return allocationGrpcClientImpl.getAllocationDetails(employeeID);
+	@GetMapping("/allocation/{allocationID}")
+	public Map<FieldDescriptor, Object> getEmployeeDetailsByAllocationID(@PathVariable Long allocationID) {
+		return allocationGrpcClientImpl.getEmployeeDetailsByAllocationID(allocationID);
 	}
 	
 	@GetMapping("/allocation")

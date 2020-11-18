@@ -20,33 +20,27 @@ public class EmployeeGrpcClient {
 
 	@GrpcClient("allocation-service")
 	private AllocationServiceGrpc.AllocationServiceBlockingStub allocationServiceBlockingStub;
-	
+
 	public Map<FieldDescriptor, Object> getAllocationByAllocationID(long allocationID) {
-		
-		Allocation allocationRequest = Allocation.newBuilder()
-															.setAllocationID(allocationID)
-															.build();
-		
+
+		Allocation allocationRequest = Allocation.newBuilder().setAllocationID(allocationID).build();
+
 		Allocation allocationReply = allocationServiceBlockingStub.getAllocation(allocationRequest);
-		
+
 		return allocationReply.getAllFields();
-		
+
 	}
-	
-public List< Map<FieldDescriptor, Object> > getAllocationByEmployeeID(long employeeID) {
-		
-		Allocation allocationRequest = Allocation.newBuilder()
-											.setEmployeeID(employeeID)
-											.build();
-		
+
+	public List<Map<FieldDescriptor, Object>> getAllocationByEmployeeID(long employeeID) {
+
+		Allocation allocationRequest = Allocation.newBuilder().setEmployeeID(employeeID).build();
+
 		Iterator<Allocation> allocationReply = allocationServiceBlockingStub.getAllocationByEmployee(allocationRequest);
 
 		Iterable<Allocation> iterable = () -> allocationReply;
 		Stream<Allocation> allocationStream = StreamSupport.stream(iterable.spliterator(), false);
-		
-		return allocationStream
-				.map(allocation -> allocation.getAllFields())
-				.collect(Collectors.toList());
-		
+
+		return allocationStream.map(allocation -> allocation.getAllFields()).collect(Collectors.toList());
+
 	}
 }
