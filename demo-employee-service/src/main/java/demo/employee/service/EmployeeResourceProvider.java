@@ -22,7 +22,7 @@ public class EmployeeResourceProvider {
 				add(Employee.newBuilder().setEmployeeID(2l).setEmployeeFirstName("Martin")
 						.setEmployeeLastName("Fowler").setEmployeeDateOfBirth(677701800000l)
 						.setEmployeeWorkingYears(40).build());
-				add(Employee.newBuilder().setEmployeeID(2l).setEmployeeFirstName("Kevlin")
+				add(Employee.newBuilder().setEmployeeID(3l).setEmployeeFirstName("Kevlin")
 						.setEmployeeLastName("Henney").setEmployeeDateOfBirth(828124200000l)
 						.setEmployeeWorkingYears(35).build());
 			}
