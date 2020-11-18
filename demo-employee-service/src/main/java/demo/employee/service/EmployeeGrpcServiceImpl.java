@@ -29,7 +29,7 @@ public class EmployeeGrpcServiceImpl extends EmployeeServiceGrpc.EmployeeService
 	 * @see demo.interfaces.grpc.EmployeeServiceGrpc.EmployeeServiceImplBase#getAllEmployeesByName(io.grpc.stub.StreamObserver)
 	 */
 	@Override
-	public StreamObserver<Employee> getAllEmployeesByName(StreamObserver<Employee> responseObserver) {
+	public StreamObserver<Employee> getAllEmployeesByIDList(StreamObserver<Employee> responseObserver) {
 		return new StreamObserver<Employee>() {
 			
 			Employee response;
@@ -37,21 +37,26 @@ public class EmployeeGrpcServiceImpl extends EmployeeServiceGrpc.EmployeeService
 			@Override
 			public void onNext(Employee value) {
 				response = Employee.newBuilder()
-							.setEmployeeID(1)
-							.setEmployeeFirstName(value.getEmployeeFirstName())
-							.setEmployeeLastName(value.getEmployeeLastName())
+							.setEmployeeID(value.getEmployeeID())
+							.setEmployeeFirstName("First Name")
+							.setEmployeeLastName("Last Name")
 							.build();
 				
+				System.out.println("Employee: " + value.getEmployeeFirstName());
+				System.out.println("Employee: " + value.getEmployeeLastName());
+				System.out.println("Employee: " + value.getEmployeeID());				
 			}
 			
 			@Override
 			public void onError(Throwable t) {
 				responseObserver.onError(t);
+				System.out.println("Error: " + t);
 				
 			}
 			
 			@Override
 			public void onCompleted() {
+				System.out.println("Completed !");
 				responseObserver.onNext(response);
 				
 			}
