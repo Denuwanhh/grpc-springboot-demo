@@ -30,8 +30,17 @@ public class EmployeeGrpcServiceImpl extends EmployeeServiceGrpc.EmployeeService
 		responseObserver.onCompleted();
 	}
 
-	/* (non-Javadoc)
-	 * @see demo.interfaces.grpc.EmployeeServiceGrpc.EmployeeServiceImplBase#getAllEmployeesByName(io.grpc.stub.StreamObserver)
+	/*
+	 * Server side implementation of bidirectional streaming RPCs where both sides
+	 * send a sequence of messages using a read-write stream. The two streams
+	 * operate independently, so clients and servers can read and write in whatever
+	 * order they like: for example, the server could wait to receive all the client
+	 * messages before writing its responses, or it could alternately read a message
+	 * then write a message, or some other combination of reads and writes. The
+	 * order of messages in each stream is preserved.
+	 * 
+	 * @see demo.interfaces.grpc.EmployeeServiceGrpc.EmployeeServiceImplBase#
+	 * getAllEmployeesByName(io.grpc.stub.StreamObserver)
 	 */
 	@Override
 	public StreamObserver<Employee> getAllEmployeesByIDList(StreamObserver<Employee> responseObserver) {
@@ -41,11 +50,10 @@ public class EmployeeGrpcServiceImpl extends EmployeeServiceGrpc.EmployeeService
 			
 			@Override
 			public void onNext(Employee value) {
-				responseList.add(Employee.newBuilder()
-							.setEmployeeID(value.getEmployeeID())
-							.setEmployeeFirstName("First Name")
-							.setEmployeeLastName("Last Name")
-							.build());
+				responseList.add(EmployeeResourceProvider.getEmployeeListfromEmployeeSource().stream()
+										.filter(emp -> emp.getEmployeeID() == value.getEmployeeID())
+										.findFirst()
+										.get());
 			}
 			
 			@Override

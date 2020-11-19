@@ -12,9 +12,11 @@ message Allocation {
 
 // The Allocation Service Definition
 service AllocationService {
+    
     // Get Allocation using Allocation ID
     rpc getAllocation (Allocation) returns (Allocation) {
     }
+    
     // Get Allocation using Employee ID
     // IDL of server streaming RPCs where the client sends a request to the server and gets a stream to read a sequence of messages back. The client reads from the returned stream until there are no more messages. gRPC guarantees message ordering within an individual RPC call.
     rpc getAllocationByEmployee (Allocation) returns (stream Allocation) {

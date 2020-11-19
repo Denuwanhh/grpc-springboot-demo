@@ -18,11 +18,12 @@ service EmployeeService {
     }
     
     // Get all employees by any given name
+    // IDL of bidirectional streaming RPCs where both sides send a sequence of messages using a read-write stream. The two streams operate independently, so clients and servers can read and write in whatever order they like: for example, the server could wait to receive all the client messages before writing its responses, or it could alternately read a message then write a message, or some other combination of reads and writes. The order of messages in each stream is preserved.
     rpc getAllEmployeesByIDList (stream Employee) returns (stream Employee) {
     }
     
     // Get employee By Employee ID
-    //IDL of Client streaming RPCs where the client writes a sequence of messages and sends them to the server, again using a provided stream. Once the client has finished writing the messages, it waits for the server to read them and return its response. Again gRPC guarantees message ordering within an individual RPC call.
+    // IDL of client streaming RPCs where the client writes a sequence of messages and sends them to the server, again using a provided stream. Once the client has finished writing the messages, it waits for the server to read them and return its response. Again gRPC guarantees message ordering within an individual RPC call.
     rpc getMostExperiencedEmployee (stream Employee) returns (Employee) {
     }
 }

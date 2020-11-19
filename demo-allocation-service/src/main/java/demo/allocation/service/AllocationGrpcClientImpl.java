@@ -48,22 +48,20 @@ public class AllocationGrpcClientImpl {
 					.getAllFields();
 	}
 
+	/*
+	 * Client side implementation of bidirectional streaming RPCs where both sides
+	 * send a sequence of messages using a read-write stream. The two streams
+	 * operate independently, so clients and servers can read and write in whatever
+	 * order they like: for example, the server could wait to receive all the client
+	 * messages before writing its responses, or it could alternately read a message
+	 * then write a message, or some other combination of reads and writes. The
+	 * order of messages in each stream is preserved.
+	 * 
+	 */
 	public List<Map<FieldDescriptor, Object>> getEmployeeFullDetails(long projectID) throws InterruptedException {
 
 		final CountDownLatch finishLatch = new CountDownLatch(1);
-		List<Employee> employeeIDList = new ArrayList<Employee>();
 		List<Map<FieldDescriptor, Object>> employeeDetailsFinalList = new ArrayList<Map<FieldDescriptor, Object>>();
-
-		employeeIDList.add(Employee.newBuilder().setEmployeeID(1l).build());
-		employeeIDList.add(Employee.newBuilder().setEmployeeID(2l).build());
-		employeeIDList.add(Employee.newBuilder().setEmployeeID(3l).build());
-		employeeIDList.add(Employee.newBuilder().setEmployeeID(4l).build());
-		employeeIDList.add(Employee.newBuilder().setEmployeeID(5l).build());
-		employeeIDList.add(Employee.newBuilder().setEmployeeID(6l).build());
-		employeeIDList.add(Employee.newBuilder().setEmployeeID(7l).build());
-		employeeIDList.add(Employee.newBuilder().setEmployeeID(8l).build());
-		employeeIDList.add(Employee.newBuilder().setEmployeeID(9l).build());
-		employeeIDList.add(Employee.newBuilder().setEmployeeID(10l).build());
 
 		StreamObserver<Employee> responseObserver = employeeServiceStub
 				.getAllEmployeesByIDList(new StreamObserver<Employee>() {
@@ -84,7 +82,10 @@ public class AllocationGrpcClientImpl {
 
 				});
 
-		employeeIDList.stream().forEach(responseObserver::onNext);
+		AllocationResourceProvider.getAllocationfromAllocationSource().stream()
+				.filter(alloc -> alloc.getProjectID() == projectID).forEach(alloc -> {
+					responseObserver.onNext(Employee.newBuilder().setEmployeeID(alloc.getEmployeeID()).build());
+				});
 
 		responseObserver.onCompleted();
 
@@ -99,6 +100,7 @@ public class AllocationGrpcClientImpl {
 	 * stream. Once the client has finished writing the messages, it waits for the
 	 * server to read them and return its response. Again gRPC guarantees message
 	 * ordering within an individual RPC call.
+	 * 
 	 * @param projectID
 	 * @return
 	 * @throws InterruptedException
@@ -129,13 +131,10 @@ public class AllocationGrpcClientImpl {
 
 				});
 
-		AllocationResourceProvider
-			.getAllocationfromAllocationSource()
-			.stream()
-			.filter(alloc -> alloc.getProjectID() == projectID)
-			.forEach(alloc -> {
+		AllocationResourceProvider.getAllocationfromAllocationSource().stream()
+				.filter(alloc -> alloc.getProjectID() == projectID).forEach(alloc -> {
 					responseObserver.onNext(Employee.newBuilder().setEmployeeID(alloc.getEmployeeID()).build());
-			});
+				});
 
 		responseObserver.onCompleted();
 
