@@ -28,16 +28,6 @@ public class EmployeeGrpcClient {
 	@GrpcClient("allocation-service")
 	private AllocationServiceGrpc.AllocationServiceStub allocationServiceStub;
 
-	public Map<FieldDescriptor, Object> getAllocationByAllocationID(long allocationID) {
-
-		Allocation allocationRequest = Allocation.newBuilder().setAllocationID(allocationID).build();
-
-		Allocation allocationReply = allocationServiceBlockingStub.getAllocation(allocationRequest);
-
-		return allocationReply.getAllFields();
-
-	}
-
 	/**
 	 * Synchronous client implementation
 	 * 
