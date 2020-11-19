@@ -32,5 +32,10 @@ public class AllocationRestController {
 	public List<Map<FieldDescriptor, Object>> getFullEmployeeListByProjectID(@RequestParam(value = "projectID", required = true) Long projectID) throws InterruptedException {
 		return allocationGrpcClientImpl.getEmployeeFullDetails(projectID);
 	}
+	
+	@GetMapping("{projectID}/allocation/getexperiencedemployeeinproject")
+	public Map<String, Map<FieldDescriptor, Object>> getMostExperiencedEmployeeInProject(@PathVariable Long projectID) throws InterruptedException {
+		return allocationGrpcClientImpl.getMostExperiencedEmployeeInProject(projectID);
+	}
 
 }

@@ -62,7 +62,11 @@ public class EmployeeGrpcServiceImpl extends EmployeeServiceGrpc.EmployeeService
 	}
 
 	/*
-	 * (non-Javadoc)
+	 * Server side implementation of Client streaming RPCs where the client writes a
+	 * sequence of messages and sends them to the server, again using a provided
+	 * stream. Once the client has finished writing the messages, it waits for the
+	 * server to read them and return its response. Again gRPC guarantees message
+	 * ordering within an individual RPC call.
 	 * 
 	 * @see demo.interfaces.grpc.EmployeeServiceGrpc.EmployeeServiceImplBase#
 	 * getMostExperiencedEmployee(io.grpc.stub.StreamObserver)
@@ -71,12 +75,19 @@ public class EmployeeGrpcServiceImpl extends EmployeeServiceGrpc.EmployeeService
 	public StreamObserver<Employee> getMostExperiencedEmployee(StreamObserver<Employee> responseObserver) {
 		return new StreamObserver<Employee>() {
 
-			Employee response = Employee.newBuilder().setEmployeeWorkingYears(0).build();
+			Employee response = null;
 
 			@Override
 			public void onNext(Employee value) {
-				if(value.getEmployeeWorkingYears() > response.getEmployeeWorkingYears()) {
-					response = value;
+				
+				Employee currentEmployee = EmployeeResourceProvider.getEmployeeListfromEmployeeSource()
+											.stream()
+											.filter(emp -> emp.getEmployeeID() == value.getEmployeeID())
+											.findFirst()
+											.get();
+																						
+				if(response == null || currentEmployee.getEmployeeWorkingYears() > response.getEmployeeWorkingYears()) {
+					response = currentEmployee;
 				}
 			}
 
