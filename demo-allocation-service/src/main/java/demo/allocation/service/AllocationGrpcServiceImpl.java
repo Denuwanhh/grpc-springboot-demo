@@ -1,5 +1,7 @@
 package demo.allocation.service;
 
+import java.util.stream.Collectors;
+
 import demo.interfaces.grpc.Allocation;
 import demo.interfaces.grpc.AllocationServiceGrpc;
 
@@ -25,24 +27,24 @@ public class AllocationGrpcServiceImpl extends AllocationServiceGrpc.AllocationS
         responseObserver.onCompleted();
 	}
 
-	/* (non-Javadoc)
-	 * @see demo.interfaces.grpc.AllocationServiceGrpc.AllocationServiceImplBase#getAllocationByEmployee(demo.interfaces.grpc.AllocationRequestForGetAllocationByEmp, io.grpc.stub.StreamObserver)
+	/*
+	 * Server side implementation of Server streaming RPCs where the
+	 * client sends a request to the server and gets a stream to read a sequence of
+	 * messages back. The client reads from the returned stream until there are no
+	 * more messages. gRPC guarantees message ordering within an individual RPC
+	 * call.
+	 * 
+	 * @see demo.interfaces.grpc.AllocationServiceGrpc.AllocationServiceImplBase#
+	 * getAllocationByEmployee(demo.interfaces.grpc.
+	 * AllocationRequestForGetAllocationByEmp, io.grpc.stub.StreamObserver)
 	 */
 	@Override
 	public void getAllocationByEmployee(Allocation request, StreamObserver<Allocation> responseObserver) {
 		
-		for(int i=0; i < 10; i++) {
-			
-			Allocation response = Allocation.newBuilder()
-					.setAllocationID(i)
-					.setEmployeeID(request.getEmployeeID())
-					.setAllocationStartDate(1577817000000l)
-					.setAllocationEndDate(1609353000000l)
-					.build();
-			
-			responseObserver.onNext(response);	
-		}
-		
+		AllocationResourceProvider.getAllocationfromAllocationSource().stream()
+				.filter(alloc -> alloc.getEmployeeID() == request.getEmployeeID())
+				.forEach(responseObserver::onNext);
+
 		responseObserver.onCompleted();
 	}	
 
