@@ -9,30 +9,30 @@ In this implementation, We build a spring boot microservice solution which conta
 2. Navigate to the project folder 
 `mvn package`
 3. Run applications avialble in 
-`grpc-springboot-demo\demo-eureka-server\target\demo-eureka-server-0.0.1-SNAPSHOT.jar`
-`grpc-springboot-demo\demo-employee-service\target\demo-employee-service-0.0.1-SNAPSHOT.jar`
+<br/>`grpc-springboot-demo\demo-eureka-server\target\demo-eureka-server-0.0.1-SNAPSHOT.jar`<br/>
+`grpc-springboot-demo\demo-employee-service\target\demo-employee-service-0.0.1-SNAPSHOT.jar`<br/>
 `grpc-springboot-demo\demo-allocation-service\target\demo-allocation-service-0.0.1-SNAPSHOT.jar`
 
 ## Service Methods
 
- - Unary RPCs
+ - Unary RPCs<br/>
  Proto Definition:  `rpc getEmployee (Employee) returns (Employee) {
-    }`
-    End Point: `{IP Address}:{8082}/allocation/{allocationID}`
+    }`<br/>
+     End Point: `{IP Address}:{8082}/allocation/{allocationID}`
     
- - Server streaming RPCs
+ - Server streaming RPCs<br/>
   Proto Definition: `rpc getAllocationByEmployee (Allocation) returns (stream Allocation) {
-    }`
+    }`<br/>
     End Point: `{IP Address}:{8089}/employee/{employeeID}/allocation`
     
- - Client streaming RPCs
+ - Client streaming RPCs<br/>
  Proto Definition: `rpc getMostExperiencedEmployee (stream Employee) returns (Employee) {
-    }`
+    }`<br/>
     End Point: `{IP Address}:{8082}/{projectID}/allocation/getexperiencedemployeeinproject`
     
- - Bidirectional streaming RPCs
-  Proto Definition: `rpc getAllEmployeesByIDList (stream Employee) returns (stream Employee) {
-    }`
+ - Bidirectional streaming RPCs<br/>
+ Proto Definition: `rpc getAllEmployeesByIDList (stream Employee) returns (stream Employee) {
+    }`<br/>
     End Point: `{IP Address}:{8082}/allocation?projectID={projectID}`
 
   
