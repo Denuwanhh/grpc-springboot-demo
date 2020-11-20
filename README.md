@@ -5,8 +5,8 @@ In this implementation, We build a spring boot microservice solution which conta
 ![High-level Architecture Diagram](https://miro.medium.com/max/1250/1*u5TYUXnCdoQj7td5ohci4A.jpeg)
 
 ## How to Run
-1. Get a clone of  [Denuwanhh](https://github.com/Denuwanhh)/**[grpc-springboot-demo](https://github.com/Denuwanhh/grpc-springboot-demo)**
-2. Navigate to the project folder 
+1. Get a clone  [Denuwanhh](https://github.com/Denuwanhh)/**[grpc-springboot-demo](https://github.com/Denuwanhh/grpc-springboot-demo)**
+2. Navigate to the project folder and run<br/> 
 `mvn package`
 3. Run applications avialble in 
 <br/>`grpc-springboot-demo\demo-eureka-server\target\demo-eureka-server-0.0.1-SNAPSHOT.jar`<br/>
