@@ -15,25 +15,26 @@ In this implementation, We build a spring boot microservice solution which conta
 
 ## Service Methods
 
- - **Unary RPCs** (Server: employee-serve, Client: allocation-service) <br/>
+ - **Unary RPCs** (gRPC Server: employee-serve, gRPC Client: allocation-service) <br/>
  Proto Definition:  `rpc getEmployee (Employee) returns (Employee) {
     }`<br/>
-     End Point: `{IP Address}:{8082}/allocation/{allocationID}`
+     End Point: `{IP Address}:8082/allocation/{allocationID}`
     
- - **Server streaming RPCs** (Server: allocation-serve, Client: employee-service)<br/>
+ - **Server streaming RPCs** (gRPC Server: allocation-serve, gRPC Client: employee-service)<br/>
   Proto Definition: `rpc getAllocationByEmployee (Allocation) returns (stream Allocation) {
     }`<br/>
-    End Point: `{IP Address}:{8089}/employee/{employeeID}/allocation`
+    Synchronous End Point: `{IP Address}:8089/employee/{employeeID}/allocation`<br/>
+    Asynchronous End Point: `{IP Address}:8089/employee/{employeeID}/allocation?isSyncClient=N`
     
- - **Client streaming RPCs** (Server: employee-serve, Client: allocation-service)<br/>
+ - **Client streaming RPCs** (gRPC Server: employee-serve, gRPC Client: allocation-service)<br/>
  Proto Definition: `rpc getMostExperiencedEmployee (stream Employee) returns (Employee) {
     }`<br/>
-    End Point: `{IP Address}:{8082}/{projectID}/allocation/getexperiencedemployeeinproject`
+    End Point: `{IP Address}:8082/{projectID}/allocation/getexperiencedemployeeinproject`
     
- - **Bidirectional streaming RPCs** (Server: employee-serve, Client: allocation-service)<br/>
+ - **Bidirectional streaming RPCs** (gRPC Server: employee-serve, gRPC Client: allocation-service)<br/>
  Proto Definition: `rpc getAllEmployeesByIDList (stream Employee) returns (stream Employee) {
     }`<br/>
-    End Point: `{IP Address}:{8082}/allocation?projectID={projectID}`
+    End Point: `{IP Address}:8082/allocation?projectID={projectID}`
 
   
   
