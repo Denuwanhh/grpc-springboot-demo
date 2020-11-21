@@ -31,7 +31,7 @@ In this implementation, We build a spring boot microservice solution which conta
     }`<br/>
     End Point: `{IP Address}:8082/{projectID}/allocation/getexperiencedemployeeinproject`
     
- - **Bidirectional streaming RPCs** (gRPC Server: employee-serve, gRPC Client: allocation-service)<br/>
+ - **Bidirectional streaming RPCs** (gRPC Server: employee-service, gRPC Client: allocation-service)<br/>
  Proto Definition: `rpc getAllEmployeesByIDList (stream Employee) returns (stream Employee) {
     }`<br/>
     End Point: `{IP Address}:8082/allocation?projectID={projectID}`
