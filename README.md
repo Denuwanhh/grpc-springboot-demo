@@ -5,28 +5,28 @@ In this implementation, We build a spring boot microservice solution which conta
 ![High-level Architecture Diagram](https://miro.medium.com/max/1250/1*u5TYUXnCdoQj7td5ohci4A.jpeg)
 
 ## How to Run
-1. Get a clone  [Denuwanhh](https://github.com/Denuwanhh)/**[grpc-springboot-demo](https://github.com/Denuwanhh/grpc-springboot-demo)**
-2. Navigate to the project folder and run<br/> 
+1. Clone the repository to your local machine
+2. Navigate to the grpc-springboot-demo folder and run following command for build the project<br/> 
 `mvn package`
-3. Run applications avialble in 
-<br/>`grpc-springboot-demo\demo-eureka-server\target\demo-eureka-server-0.0.1-SNAPSHOT.jar`<br/>
-`grpc-springboot-demo\demo-employee-service\target\demo-employee-service-0.0.1-SNAPSHOT.jar`<br/>
-`grpc-springboot-demo\demo-allocation-service\target\demo-allocation-service-0.0.1-SNAPSHOT.jar`
+3. Run applications using following commands
+<br/>`java -jar grpc-springboot-demo\demo-eureka-server\target\demo-eureka-server-0.0.1-SNAPSHOT.jar`<br/>
+`java -jar grpc-springboot-demo\demo-employee-service\target\demo-employee-service-0.0.1-SNAPSHOT.jar`<br/>
+`java -jar grpc-springboot-demo\demo-allocation-service\target\demo-allocation-service-0.0.1-SNAPSHOT.jar`
 
 ## Service Methods
 
- - **Unary RPCs** (gRPC Server: employee-serve, gRPC Client: allocation-service) <br/>
+ - **Unary RPCs** (gRPC Server: employee-service, gRPC Client: allocation-service) <br/>
  Proto Definition:  `rpc getEmployee (Employee) returns (Employee) {
     }`<br/>
      End Point: `{IP Address}:8082/allocation/{allocationID}`
     
- - **Server streaming RPCs** (gRPC Server: allocation-serve, gRPC Client: employee-service)<br/>
+ - **Server streaming RPCs** (gRPC Server: allocation-service, gRPC Client: employee-service)<br/>
   Proto Definition: `rpc getAllocationByEmployee (Allocation) returns (stream Allocation) {
     }`<br/>
     Synchronous End Point: `{IP Address}:8089/employee/{employeeID}/allocation`<br/>
     Asynchronous End Point: `{IP Address}:8089/employee/{employeeID}/allocation?isSyncClient=N`
     
- - **Client streaming RPCs** (gRPC Server: employee-serve, gRPC Client: allocation-service)<br/>
+ - **Client streaming RPCs** (gRPC Server: employee-service, gRPC Client: allocation-service)<br/>
  Proto Definition: `rpc getMostExperiencedEmployee (stream Employee) returns (Employee) {
     }`<br/>
     End Point: `{IP Address}:8082/{projectID}/allocation/getexperiencedemployeeinproject`
